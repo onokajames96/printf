@@ -3,7 +3,7 @@
 /**
  * print_hex - prints an unsigned int in hexidecimal form
  * @n: unsigned int to print
- * @c: flag to determine case of printing (0 = lower, 1 = upper)
+ * @c: case to print (0 = lowercase, 1 = uppercase)
  *
  * Return: number of digits printed
  */
