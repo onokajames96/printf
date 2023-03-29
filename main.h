@@ -7,9 +7,9 @@
 #include <limits.h>
 
 /**
- * struct print - structure for printing various types
- * @t: type to print
- * @f: function to print
+ * struct print - Structure for printing various types
+ * @t: Type to print
+ * @f: Function to print
  */
 typedef struct print
 {
