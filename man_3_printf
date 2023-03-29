@@ -6,7 +6,7 @@
 First step include "main.h".
 _printf( ARGS ) ...
 .SH DESCRIPTION
-The _printf() function produces output according to a format which is described
+The _printf() function deliver output according to a format which is described
 below. This function write its output to the stdout, the standard output stream.
 .SH USAGE
 For _printf you have to use the following key characters preceeded by % symbol.
