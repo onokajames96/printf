@@ -3,7 +3,7 @@
 
 /**
  * print_c - prints a char
- * @c: char to print
+ * @c: character to print
  *
  * Return: always 1
  */
