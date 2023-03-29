@@ -3,7 +3,7 @@
 /**
  * print_i - prints an integer
  * @i: integer to print
- *
+ * @c: character to print
  * Return: number of chars and digits printed
  */
 int print_i(va_list i)
