@@ -2,8 +2,8 @@
 
 /**
  * _printChar - Print
- * @values: Store the a list of characters
- * Return: num of parameters printed
+ * @values: Hold the list of characters
+ * Return: number of parameters printed
  */
 int _printChar(va_list values)
 {
