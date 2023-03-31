@@ -1,98 +1,44 @@
+#include <limits.h>
+#include <stdio.h>
 #include "main.h"
 
 /**
- * print_u - prints an unsigned in decimal notation
- * @u: unsigned int to print
+ * main - Entry point
  *
- * Return: number of digits printed
+ * Return: Always 0
  */
-int print_u(va_list u)
+int main(void)
 {
-	unsigned int a[10];
-	unsigned int i, m, n, sum;
-	int count;
+    int len;
+    int len2;
+    unsigned int ui;
+    void *addr;
 
-	n = va_arg(u, unsigned int);
-	m = 1000000000; /* (10 ^ 9) */
-	a[0] = n / m;
-	for (i = 1; i < 10; i++)
-	{
-		m /= 10;
-		a[i] = (n / m) % 10;
-	}
-	for (i = 0, sum = 0, count = 0; i < 10; i++)
-	{
-		sum += a[i];
-		if (sum || i == 9)
-		{
-			_putchar('0' + a[i]);
-			count++;
-		}
-	}
-	return (count);
+    len = _printf("Let's try to printf a simple sentence.\n");
+    len2 = printf("Let's try to printf a simple sentence.\n");
+    ui = (unsigned int)INT_MAX + 1024;
+    addr = (void *)0x7ffe637541f0;
+    _printf("Length:[%d, %i]\n", len, len);
+    printf("Length:[%d, %i]\n", len2, len2);
+    _printf("Negative:[%d]\n", -762534);
+    printf("Negative:[%d]\n", -762534);
+    _printf("Unsigned:[%u]\n", ui);
+    printf("Unsigned:[%u]\n", ui);
+    _printf("Unsigned octal:[%o]\n", ui);
+    printf("Unsigned octal:[%o]\n", ui);
+    _printf("Unsigned hexadecimal:[%x, %X]\n", ui, ui);
+    printf("Unsigned hexadecimal:[%x, %X]\n", ui, ui);
+    _printf("Character:[%c]\n", 'H');
+    printf("Character:[%c]\n", 'H');
+    _printf("String:[%s]\n", "I am a string !");
+    printf("String:[%s]\n", "I am a string !");
+    _printf("Address:[%p]\n", addr);
+    printf("Address:[%p]\n", addr);
+    len = _printf("Percent:[%%]\n");
+    len2 = printf("Percent:[%%]\n");
+    _printf("Len:[%d]\n", len);
+    printf("Len:[%d]\n", len2);
+    _printf("Unknown:[%r]\n");
+    printf("Unknown:[%r]\n");
+    return (0);
 }
-
-/**
- * print_o - takes an unsigned int and prints it in octal notation
- * @o: unsigned int to print
- *
- * Return: number of digits printed
- */
-int print_o(va_list o)
-{
-	unsigned int a[11];
-	unsigned int i, m, n, sum;
-	int count;
-
-	n = va_arg(o, unsigned int);
-	m = 1073741824; /* (8 ^ 10) */
-	a[0] = n / m;
-	for (i = 1; i < 11; i++)
-	{
-		m /= 8;
-		a[i] = (n / m) % 8;
-	}
-	for (i = 0, sum = 0, count = 0; i < 11; i++)
-	{
-		sum += a[i];
-		if (sum || i == 10)
-		{
-			_putchar('0' + a[i]);
-			count++;
-		}
-	}
-	return (count);
-}
-
-/**
- * print_b - takes an unsigned int and prints it in binary notation
- * @b: unsigned in to print
- *
- * Return: number of digits printed
- */
-int print_b(va_list b)
-{
-	unsigned int n, m, i, sum;
-	unsigned int a[32];
-	int count;
-
-	n = va_arg(b, unsigned int);
-	m = 2147483648; /* (2 ^ 31) */
-	a[0] = n / m;
-	for (i = 1; i < 32; i++)
-	{
-		m /= 2;
-		a[i] = (n / m) % 2;
-	}
-	for (i = 0, sum = 0, count = 0; i < 32; i++)
-	{
-		sum += a[i];
-		if (sum || i == 31)
-		{
-			_putchar('0' + a[i]);
-			count++;
-		}
-	}
-	return (count);
-}
-

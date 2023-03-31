@@ -1,44 +1,34 @@
-#include <limits.h>
-#include <stdio.h>
 #include "main.h"
 
 /**
- * main - Entry point
- *
- * Return: Always return 0
+ * get_flags - Calculates active flags
+ * @format: Formatted string in which to print the arguments
+ * @i: take a parameter.
+ * Return: Flags:
  */
-int main(void)
+int get_flags(const char *format, int *i)
 {
-    int len;
-    int len2;
-    unsigned int ui;
-    void *addr;
+	/* - + 0 # ' ' */
+	/* 1 2 4 8  16 */
+	int j, curr_i;
+	int flags = 0;
+	const char FLAGS_CH[] = {'-', '+', '0', '#', ' ', '\0'};
+	const int FLAGS_ARR[] = {F_MINUS, F_PLUS, F_ZERO, F_HASH, F_SPACE, 0};
 
-    len = _printf("Let's try to printf a simple sentence.\n");
-    len2 = printf("Let's try to printf a simple sentence.\n");
-    ui = (unsigned int)INT_MAX + 1024;
-    addr = (void *)0x7ffe637541f0;
-    _printf("Length:[%d, %i]\n", len, len);
-    printf("Length:[%d, %i]\n", len2, len2);
-    _printf("Negative:[%d]\n", -762534);
-    printf("Negative:[%d]\n", -762534);
-    _printf("Unsigned:[%u]\n", ui);
-    printf("Unsigned:[%u]\n", ui);
-    _printf("Unsigned octal:[%o]\n", ui);
-    printf("Unsigned octal:[%o]\n", ui);
-    _printf("Unsigned hexadecimal:[%x, %X]\n", ui, ui);
-    printf("Unsigned hexadecimal:[%x, %X]\n", ui, ui);
-    _printf("Character:[%c]\n", 'H');
-    printf("Character:[%c]\n", 'H');
-    _printf("String:[%s]\n", "I am a string !");
-    printf("String:[%s]\n", "I am a string !");
-    _printf("Address:[%p]\n", addr);
-    printf("Address:[%p]\n", addr);
-    len = _printf("Percent:[%%]\n");
-    len2 = printf("Percent:[%%]\n");
-    _printf("Len:[%d]\n", len);
-    printf("Len:[%d]\n", len2);
-    _printf("Unknown:[%r]\n");
-    printf("Unknown:[%r]\n");
-    return (0);
+	for (curr_i = *i + 1; format[curr_i] != '\0'; curr_i++)
+	{
+		for (j = 0; FLAGS_CH[j] != '\0'; j++)
+			if (format[curr_i] == FLAGS_CH[j])
+			{
+				flags |= FLAGS_ARR[j];
+				break;
+			}
+
+		if (FLAGS_CH[j] == 0)
+			break;
+	}
+
+	*i = curr_i - 1;
+
+	return (flags);
 }

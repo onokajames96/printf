@@ -1,30 +1,41 @@
-.TH man 1 "30 July 2019" "1.0" "_printf man page"
-.SH NAME
-.B _printf
-- Our own printf function
-.SH SYNOPSIS
-First step include "main.h".
-_printf( ARGS ) ...
-.SH DESCRIPTION
-The _printf() function deliver output according to a format which is described
-below. This function write its output to the stdout, the standard output stream.
-.SH USAGE
-For _printf you have to use the following key characters preceeded by % symbol.
-.RS 3
-%c: It is to print characters
-.RS 0
-%s: It is to print strings
-.RS 0
-%d: It is to print Signed Integer
-.RS 0
-%i: It is to print integers
-.SH RETURN VALUES
-The _printf() function returns an integer representing the number of symbols
-printed not counting \\0 for the string.
-.SH SEE ALSO
-.I printf(1), printf(3)
-.SH BUGS
-Report printf bugs to 943@holbertonschool.com or
-921@holbertonschool.com
-.SH AUTHOR
-Writen by JAMES ONOKA and DANIEL Agbo
+#include "main.h"
+
+/**
+ * get_precision - Calculates the precision for printing
+ * @format: Formatted string in which to print the arguments
+ * @i: List of arguments to be printed.
+ * @list: list of arguments.
+ *
+ * Return: Precision.
+ */
+int get_precision(const char *format, int *i, va_list list)
+{
+	int curr_i = *i + 1;
+	int precision = -1;
+
+	if (format[curr_i] != '.')
+		return (precision);
+
+	precision = 0;
+
+	for (curr_i += 1; format[curr_i] != '\0'; curr_i++)
+	{
+		if (is_digit(format[curr_i]))
+		{
+			precision *= 10;
+			precision += format[curr_i] - '0';
+		}
+		else if (format[curr_i] == '*')
+		{
+			curr_i++;
+			precision = va_arg(list, int);
+			break;
+		}
+		else
+			break;
+	}
+
+	*i = curr_i - 1;
+
+	return (precision);
+}

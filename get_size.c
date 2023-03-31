@@ -1,47 +1,26 @@
 #include "main.h"
+
 /**
- * _printDec - Print decimal (Base 10)
- * @values: Hold the value of arguments
- * Return: Counter print number
+ * get_size - Calculates the size to cast the argument
+ * @format: Formatted string in which to print the arguments
+ * @i: List of arguments to be printed.
+ *
+ * Return: Precision.
  */
-int _printDec(va_list values)
+int get_size(const char *format, int *i)
 {
-	unsigned int Abs, aux, count, count2;
-	int numbers;
+	int curr_i = *i + 1;
+	int size = 0;
 
-	count = 0;
+	if (format[curr_i] == 'l')
+		size = S_LONG;
+	else if (format[curr_i] == 'h')
+		size = S_SHORT;
 
-	numbers = va_arg(values, int);
-
-	if (numbers < 0)
-	{
-		Abs = (numbers * -1);
-		count += _putchar(45);
-	}
+	if (size == 0)
+		*i = curr_i - 1;
 	else
-		Abs = numbers;
+		*i = curr_i;
 
-	aux = Abs;
-	count2 = 1;
-	while (aux > 9)
-	{
-		aux = aux / 10;
-		count2 = count2 * 10;
-	}
-
-	while (count2 >= 1)
-	{
-		count = count + _putchar(((Abs / count2) % 10) + '0');
-		count2 = count2 / 10;
-	}
-	return (count);
-}
-/**
- * _printInt - Print the integers
- * @values: Store list numbers
- * Return: Number print
- */
-int _printInt(va_list values)
-{
-	return (_printDec(values));
+	return (size);
 }

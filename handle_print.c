@@ -1,130 +1,49 @@
 #include "main.h"
-
 /**
- * print_hex - prints an unsigned int in hexidecimal form
- * @n: unsigned int to print
- * @c: case to print (0 = lowercase, 1 = uppercase)
- *
- * Return: number of digits printed
+ * handle_print - Prints an argument based on its type
+ * @fmt: Formatted string in which to print the arguments.
+ * @list: List of arguments to be printed.
+ * @ind: ind.
+ * @buffer: Buffer array to handle print.
+ * @flags: Calculates active flags
+ * @width: get width.
+ * @precision: Precision specification
+ * @size: Size specifier
+ * Return: 1 or 2;
  */
-int print_hex(unsigned int n, unsigned int c)
+int handle_print(const char *fmt, int *ind, va_list list, char buffer[],
+	int flags, int width, int precision, int size)
 {
-	unsigned int a[8];
-	unsigned int i, m, sum;
-	char diff;
-	int count;
+	int i, unknow_len = 0, printed_chars = -1;
+	fmt_t fmt_types[] = {
+		{'c', print_char}, {'s', print_string}, {'%', print_percent},
+		{'i', print_int}, {'d', print_int}, {'b', print_binary},
+		{'u', print_unsigned}, {'o', print_octal}, {'x', print_hexadecimal},
+		{'X', print_hexa_upper}, {'p', print_pointer}, {'S', print_non_printable},
+		{'r', print_reverse}, {'R', print_rot13string}, {'\0', NULL}
+	};
+	for (i = 0; fmt_types[i].fmt != '\0'; i++)
+		if (fmt[*ind] == fmt_types[i].fmt)
+			return (fmt_types[i].fn(list, buffer, flags, width, precision, size));
 
-	m = 268435456; /* (16 ^ 7) */
-	if (c)
-		diff = 'A' - ':';
-	else
-		diff = 'a' - ':';
-	a[0] = n / m;
-	for (i = 1; i < 8; i++)
+	if (fmt_types[i].fmt == '\0')
 	{
-		m /= 16;
-		a[i] = (n / m) % 16;
-	}
-	for (i = 0, sum = 0, count = 0; i < 8; i++)
-	{
-		sum += a[i];
-		if (sum || i == 7)
+		if (fmt[*ind] == '\0')
+			return (-1);
+		unknow_len += write(1, "%%", 1);
+		if (fmt[*ind - 1] == ' ')
+			unknow_len += write(1, " ", 1);
+		else if (width)
 		{
-			if (a[i] < 10)
-				_putchar('0' + a[i]);
-			else
-				_putchar('0' + diff + a[i]);
-			count++;
+			--(*ind);
+			while (fmt[*ind] != ' ' && fmt[*ind] != '%')
+				--(*ind);
+			if (fmt[*ind] == ' ')
+				--(*ind);
+			return (1);
 		}
+		unknow_len += write(1, &fmt[*ind], 1);
+		return (unknow_len);
 	}
-	return (count);
-}
-/**
- * print_x - takes an unsigned int and prints it in lowercase hex notation
- * @x: unsigned int to print
- *
- * Return: number of digits printed
- */
-int print_x(va_list x)
-{
-	return (print_hex(va_arg(x, unsigned int), 0));
-}
-
-/**
- * print_X - takes am unsigned int and prints it in uppercase hex notation
- * @X: unsigned int to print
- *
- * Return: number of digits printed
- */
-int print_X(va_list X)
-{
-	return (print_hex(va_arg(X, unsigned int), 1));
-}
-
-/**
- * _pow - calculates an exponent
- * @base: base of exponent
- * @exponent: exponent of number
- *
- * Return: base ^ exponent
- */
-static unsigned long _pow(unsigned int base, unsigned int exponent)
-{
-	unsigned int i;
-	unsigned long ans = base;
-
-	for (i = 1; i < exponent; i++)
-	{
-		ans *= base;
-	}
-	return (ans);
-}
-
-/**
- * print_p - prints an address
- * @p: address to print
- *
- * Return: number of characters to print
- */
-int print_p(va_list p)
-{
-	int count = 0;
-	unsigned int a[16];
-	unsigned int i, sum;
-	unsigned long n, m;
-	char *str = "(nil)";
-
-	n = va_arg(p, unsigned long);
-	if (n == 0)
-	{
-		for (i = 0; str[i]; i++)
-		{
-			_putchar(str[i]);
-			count++;
-		}
-		return (count);
-	}
-	_putchar('0');
-	_putchar('x');
-	count = 2;
-	m = _pow(16, 15); /* 16 ^ 15 */
-	a[0] = n / m;
-	for (i = 1; i < 16; i++)
-	{
-		m /= 16;
-		a[i] = (n / m) % 16;
-	}
-	for (i = 0, sum = 0; i < 16; i++)
-	{
-		sum += a[i];
-		if (sum || i == 15)
-		{
-			if (a[i] < 10)
-				_putchar('0' + a[i]);
-			else
-				_putchar('0' + ('a' - ':') + a[i]);
-			count++;
-		}
-	}
-	return (count);
+	return (printed_chars);
 }
